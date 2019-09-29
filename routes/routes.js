@@ -31,6 +31,7 @@ module.exports = function (app) {
             // redirect to /uploads/ for uploading Image file
             res.redirect("/uploads/" + req.file.filename);
             console.log(req.file.filename);
+            rcnn.run_rcnn("./uploads/"+req.file.filename);
             return res.status(200).end();
     });
     app.get('/uploads/:upload', function (req, res) {
@@ -39,7 +40,8 @@ module.exports = function (app) {
         var img = fs.readFileSync(__dirname + "/uploads/" + file);
         res.writeHead(200, { 'Content-Type': 'image/png' });
         res.end(img, 'binary');
-        rcnn.run_rcnn(__dirname+"/uploads/" + file);
+        console.log("Done");
+        return;
     });
     
     // GET index.html
