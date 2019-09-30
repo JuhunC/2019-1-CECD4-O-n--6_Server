@@ -1,14 +1,13 @@
 var express = require("express");
 var fs = require("fs");
 var app = express();
-var rcnn = require('../models/rcnn');
+var yolov3 = require('../models/yolov3');
 var multer, storage, path, crypto;
 multer = require('multer')
 path = require('path');
 crypto = require('crypto');
 
 module.exports = function (app) {
-
     storage = multer.diskStorage({
         destination: './uploads/',
         filename: function (req, file, cb) {
@@ -31,7 +30,7 @@ module.exports = function (app) {
             // redirect to /uploads/ for uploading Image file
             res.redirect("/uploads/" + req.file.filename);
             console.log(req.file.filename);
-            rcnn.run_rcnn("./uploads/"+req.file.filename);
+            yolov3.run_yolov3("./uploads/"+req.file.filename);
             return res.status(200).end();
     });
     app.get('/uploads/:upload', function (req, res) {
