@@ -9,7 +9,7 @@ crypto = require('crypto');
 
 module.exports = function (app) {
     storage = multer.diskStorage({
-        destination: './uploads/',
+        destination: '/home/johnc/Desktop/2019-1-CECD4-O-n--6_Server/uploads/',
         filename: function (req, file, cb) {
             return crypto.pseudoRandomBytes(16, function (err, raw) {
                 if (err) {
@@ -30,7 +30,7 @@ module.exports = function (app) {
             // redirect to /uploads/ for uploading Image file
             res.redirect("/uploads/" + req.file.filename);
             console.log(req.file.filename);
-            yolov3.run_yolov3("./uploads/"+req.file.filename);
+            yolov3.run_yolov3("/home/johnc/Desktop/2019-1-CECD4-O-n--6_Server/uploads/"+req.file.filename);
             return res.status(200).end();
     });
     app.get('/uploads/:upload', function (req, res) {

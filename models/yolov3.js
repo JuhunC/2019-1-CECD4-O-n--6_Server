@@ -1,24 +1,32 @@
 var util = require('util');
+var sizeOf = require('image-size');
 const exec = util.promisify(require('child_process').exec);
 
-var yolov3_dir = '/home/johnc/Desktop/2019-1-CECD4-O-n--6/tf-faster-rcnn';
+var yolov3_dir = '/home/johnc/Desktop/2019-1-CECD4-O-n--6/yolov3';
 
 
 exports.run_yolov3 = async function(file){
-    // TODO : Will run commands to run tf-faster-rcnn
+    console.log( 'sudo python3 '
+    + yolov3_dir + '/detect.py '
+    + '--data ' +yolov3_dir + '/data/coco.data '
+    + '--cfg ' +yolov3_dir +'/cfg/yolov3.cfg '
+    + '--weights ' +yolov3_dir +'/weights/yolov3.weights '
+    //+ '--output ' + yolov3_dir +/////////dirdirdir
+    + ' --source ' + file);
+    // TODO : Will run commands to run yolov3
+    var dimensions = sizeOf(file);
     const{stdout, stderr} = await exec(
-        'sudo python '+ yolov3_dir 
-        +'/tools/demo.py --net res101 --dataset pascal_voc_0712 --input '
-        +file+' --output ' + file+'_out');
-    // console.log('sudo '+ tf_faster_rcnn_dir 
-    //     +'/tools/demo.py --net res101 --dataset pascal_voc_0712 --input '
-    //     +file+' --output ' + file +'_out);
-    
+        'sudo python3 '
+        + yolov3_dir + '/detect.py '
+        + '--data ' +yolov3_dir + '/data/coco.data '
+        + '--cfg ' +yolov3_dir +'/cfg/yolov3.cfg '
+        + '--weights ' +yolov3_dir +'/weights/yolov3.weights '
+        //+ '--img-size ' + dimensions.height //* dimensions.height
+        + ' --source ' + file);
+    console.log(stdout)
     // TODO : For Testing
     //const{stdout, stderr} = await exec("dir");
     //console.log(stdout);
-    console.log('sudo python '+ yolov3_dir 
-    +'/tools/demo.py --net res101 --dataset pascal_voc_0712 --input '
-    +file+' --output ' + file+'_out');
+    
     return;
 }
