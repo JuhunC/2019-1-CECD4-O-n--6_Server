@@ -6,10 +6,11 @@ var multer, storage, path, crypto;
 multer = require('multer')
 path = require('path');
 crypto = require('crypto');
-
+//upload_dir = '/home/johnc/Desktop/2019-1-CECD4-O-n--6_Server/uploads/'
+upload_dir = 'C:\\Users\\JohnC\\Documents\\2019-1-CECD4-O-n--6_Server\\uploads\\'
 module.exports = function (app) {
     storage = multer.diskStorage({
-        destination: '/home/johnc/Desktop/2019-1-CECD4-O-n--6_Server/uploads/',
+        destination: upload_dir,
         filename: function (req, file, cb) {
             return crypto.pseudoRandomBytes(16, function (err, raw) {
                 if (err) {
@@ -21,7 +22,7 @@ module.exports = function (app) {
     });
     // Post files
     app.post(
-        "/upload",
+        "/yolov3",
         multer({
             storage: storage
         }).single('upload'), function (req, res) {
@@ -30,7 +31,7 @@ module.exports = function (app) {
             // redirect to /uploads/ for uploading Image file
             res.redirect("/uploads/" + req.file.filename);
             console.log(req.file.filename);
-            yolov3.run_yolov3("/home/johnc/Desktop/2019-1-CECD4-O-n--6_Server/uploads/"+req.file.filename);
+            yolov3.run_yolov3(upload_dir+req.file.filename);
             return res.status(200).end();
     });
     app.get('/uploads/:upload', function (req, res) {
