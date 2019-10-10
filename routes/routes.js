@@ -34,7 +34,7 @@ module.exports = function(app) {
 
     });
     app.post('/yolov3',upload.single('image'), function(req, res) {
-        yolov3.run_yolov3(server_dir+'/uploads/'+req.file.filename);
+        yolov3.run_yolov3(server_dir+'/uploads/'+req.file.filename, server_dir+'/output/yolov3/'+req.fiel.filename);
     });
 
 
