@@ -1,10 +1,12 @@
 var util = require('util');
 var sizeOf = require('image-size');
 const exec = util.promisify(require('child_process').exec);
-
+var http = require('http');
+var express = require('express');
+var fs = require('fs');
 var yolov3_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6\\yolov3'
 
-exports.run_yolov3 = async function(file, outfile){
+exports.run_yolov3 = async function(res, file, outfile){
     // *******************WINDOWS VERSION********************//
     console.log( 'python '
         + yolov3_dir + '\\detect.py '
@@ -24,9 +26,26 @@ exports.run_yolov3 = async function(file, outfile){
         + ' --output ' + outfile
         + ' --source ' + file
         );
-    console.log(stdout)
-    console.log('End')
+    console.log(stdout);
     // ****************************************************//
+    res.json(JSON.stringify({"label":"hello"}));
+
+    // Read Coordinate File(.txt)
+    try{
+        var file_data = fs.readFileSync(outfile+'.txt','utf8');
+       
+    }catch(e){
+        console.log('Error',e.stack);
+    }
+
+
+
+   
+    
+    
+    // Read File and Send Json Data Back
+    
+
 
     // *******************LINUX VERSION**********************//
     // console.log( 'sudo python3 '

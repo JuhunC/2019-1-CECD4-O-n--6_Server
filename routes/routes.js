@@ -1,18 +1,17 @@
-var express = require("express");
-var fs = require("fs");
+var express = require("express"); 
+var fs = require('fs');
 var app = express();
 var yolov3 = require('../models/yolov3');
 var multer, storage, path, crypto;
 multer = require('multer');
 path = require('path');
-crypto = require('crypto');
+//crypto = require('crypto');
 
 upload_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\uploads\\'
 server_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\'
 yolov3_out_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\output\\yolov3\\'
 gen_inpaint_out_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\output\\gen_inpaint\\'
 
-var fs = require('fs');
 
 storage = multer.diskStorage({
     destination : function(req,file,cb){
@@ -33,17 +32,15 @@ module.exports = function(app) {
         res.end("Node-File-Upload");
 
     });
-    app.post('/yolov3',upload.single('image'), function(req, res) {
-        yolov3.run_yolov3(server_dir+'/uploads/'+req.file.filename, server_dir+'/output/yolov3/'+req.fiel.filename);
+    app.post('/yolov3',upload.single('image'), function(req, res) {//filename.split('.').slice(0, -1).join('.')
+        yolov3.run_yolov3(res, server_dir+'/uploads/'+req.file.filename, server_dir+'\\output\\yolov3\\'+req.file.filename.split('.').slice(0,-1).join('.'));
     });
-
 
     app.get('/uploads/:file', function (req, res){
             file = req.params.file;
             var img = fs.readFileSync("/uploads/" + file);
             res.writeHead(200, {'Content-Type': 'image/jpg' });
             res.end(img, 'binary');
-
     });
 };
 // storage = multer.diskStorage({
