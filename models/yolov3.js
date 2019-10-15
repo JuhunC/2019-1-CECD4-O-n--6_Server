@@ -28,12 +28,27 @@ exports.run_yolov3 = async function(res, file, outfile){
         );
     console.log(stdout);
     // ****************************************************//
-    res.json(JSON.stringify({"label":"hello"}));
+    // res.json(JSON.stringify({"label":"hello"}));
+
 
     // Read Coordinate File(.txt)
     try{
+        var json_data = {};
         var file_data = fs.readFileSync(outfile+'.txt','utf8');
+        file_data = file_data.replace(/(\n)/gm, " ");
+        file_data = file_data.replace(/(\r)/gm, "");
+        var coor_string  = file_data.split(' ');//string[] data returned
        
+        coor_string = coor_string.filter(function (el) {
+        return el != "";
+        });
+        var i,j,temparray,chunk = 6;
+        for (i=0,j=coor_string.length; i<j; i+=chunk) {
+            temparray = coor_string.slice(i,i+chunk);
+            json_data[temparray[0]+i/6] = temparray.slice(1,6);
+        }
+        console.log(json_data);
+        res.json(JSON.stringify(json_data,null,1));
     }catch(e){
         console.log('Error',e.stack);
     }
