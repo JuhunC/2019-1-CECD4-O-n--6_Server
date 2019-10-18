@@ -38,7 +38,9 @@ exports.run_yolov3 = async function(res, file, outfile){
         file_data = file_data.replace(/(\n)/gm, " ");
         file_data = file_data.replace(/(\r)/gm, "");
         var coor_string  = file_data.split(' ');//string[] data returned
-       
+        for(i=0;i<coor_string.length;i++){
+            coor_string[i] = coor_string[i].replace('_',' ');
+        }
         coor_string = coor_string.filter(function (el) {
         return el != "";
         });
