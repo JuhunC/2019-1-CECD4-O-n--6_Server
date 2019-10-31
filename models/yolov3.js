@@ -49,6 +49,7 @@ exports.run_yolov3 = async function(res, file, outfile){
             temparray = coor_string.slice(i,i+chunk);
             json_data[temparray[0]+i/6] = temparray.slice(1,6);
         }
+        json_data['image_file_dir'] = file;
         console.log(json_data);
         res.json(JSON.stringify(json_data,null,1));
     }catch(e){
