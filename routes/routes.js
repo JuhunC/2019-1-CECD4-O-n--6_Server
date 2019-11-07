@@ -16,7 +16,7 @@ gen_inpaint_out_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\
 
 storage = multer.diskStorage({
     destination : function(req,file,cb){
-        cb(null, 'uploads/')
+        cb(null, 'uploads\\')
     },
     filename: function(req,file,cb){
         cb(null, file.fieldname+'_'+Date.now()+path.extname(file.originalname))
@@ -31,7 +31,6 @@ module.exports = function(app) {
 
     app.get('/',function(req,res){
         res.end("Node-File-Upload");
-
     });
     app.post('/yolov3',upload.single('image'), function(req, res) {//filename.split('.').slice(0, -1).join('.')
         yolov3.run_yolov3(res, server_dir+'/uploads/'+req.file.filename, server_dir+'\\output\\yolov3\\'+req.file.filename.split('.').slice(0,-1).join('.'));
@@ -39,7 +38,7 @@ module.exports = function(app) {
 
     app.get('/uploads/:file', function (req, res){
             file = req.params.file;
-            var img = fs.readFileSync("/uploads/" + file);
+            var img = fs.readFileSync("\\uploads\\" + file);
             res.writeHead(200, {'Content-Type': 'image/jpg' });
             res.end(img, 'binary');
     });
