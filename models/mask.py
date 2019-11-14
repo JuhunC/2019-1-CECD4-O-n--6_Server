@@ -16,7 +16,7 @@ if __name__ == "__main__":
     fd.columns = ["label", "w", "h", "width","height","accuracy"]
     print(fd)
     # get original image
-    ori_img = cv2.imread(args.imgfile,0)
+    ori_img = cv2.imread(args.imgfile,1)
     height, width = ori_img.shape[:2]
     print(height)
     print(width)
@@ -28,6 +28,10 @@ if __name__ == "__main__":
                 blank_image[row['h']+h,row['w']+w,0] = 255
                 blank_image[row['h']+h,row['w']+w,1] = 255
                 blank_image[row['h']+h,row['w']+w,2] = 255
-    # cv2.imshow("",blank_image)
-    # cv2.waitKey()
+                ori_img[row['h']+h,row['w']+w] = (255,255,255)
+                ori_img[row['h']+h,row['w']+w] = (255,255,255)
+                ori_img[row['h']+h,row['w']+w] = (255,255,255)
+    cv2.imwrite(args.imgfile,ori_img)
     cv2.imwrite(args.imgfile+'_mask.png',blank_image)
+    print("Mask Complete")
+    # cv2.imwrite(args.imgfile, ori_img)
