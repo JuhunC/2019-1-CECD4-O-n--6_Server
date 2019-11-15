@@ -16,7 +16,7 @@ exports.run_yolov3 = async function(res, file, outfile){
         + ' --output ' + outfile
         + ' --source ' + file
     );
-    // TODO : Will run commands to run yolov3
+
     const{stdout, stderr} = await exec(
         'python '
         + yolov3_dir + '\\detect.py '
@@ -28,7 +28,7 @@ exports.run_yolov3 = async function(res, file, outfile){
         );
     console.log(stdout);
     // ****************************************************//
-    // res.json(JSON.stringify({"label":"hello"}));
+
 
 
     // Read Coordinate File(.txt)
@@ -42,7 +42,7 @@ exports.run_yolov3 = async function(res, file, outfile){
             coor_string[i] = coor_string[i].replace('_',' ');
         }
         coor_string = coor_string.filter(function (el) {
-        return el != "";
+            return el != "";
         });
         var i,j,temparray,chunk = 6;
         for (i=0,j=coor_string.length; i<j; i+=chunk) {
@@ -55,38 +55,6 @@ exports.run_yolov3 = async function(res, file, outfile){
     }catch(e){
         console.log('Error',e.stack);
     }
-
-
-
    
-    
-    
-    // Read File and Send Json Data Back
-    
-
-
-    // *******************LINUX VERSION**********************//
-    // console.log( 'sudo python3 '
-    // + yolov3_dir + '/detect.py '
-    // + '--data ' +yolov3_dir + '/data/coco.data '
-    // + '--cfg ' +yolov3_dir +'/cfg/yolov3.cfg '
-    // + '--weights ' +yolov3_dir +'/weights/yolov3.weights '
-    // //+ '--output ' + yolov3_dir +/////////dirdirdir
-    // + ' --source ' + file);
-    // // TODO : Will run commands to run yolov3
-    // const{stdout, stderr} = await exec(
-    //     'sudo python3 '
-    //     + yolov3_dir + '/detect.py '
-    //     + '--data ' +yolov3_dir + '/data/coco.data '
-    //     + '--cfg ' +yolov3_dir +'/cfg/yolov3.cfg '
-    //     + '--weights ' +yolov3_dir +'/weights/yolov3.weights '
-    //     //+ '--img-size ' + dimensions.height //* dimensions.height
-    //     + ' --source ' + file);
-    // console.log(stdout)
-    // ********************************************/
-    // TODO : For Testing
-    //const{stdout, stderr} = await exec("dir");
-    //console.log(stdout);
-    
     return;
 }

@@ -51,9 +51,9 @@ module.exports = function(app) {
         req.on('end', () => {
             var json_data = JSON.parse(body); // get string
             json_data = JSON.parse(json_data);// string to json object
-            console.log(typeof(json_data));
-            console.log(json_data);
-            inpaint.run_gen_inpaint(req,res,json_data);
+            // console.log(typeof(json_data));
+            // console.log(json_data);
+            inpaint.run_gen_inpaint(req, res, json_data);
         });
     })
 };

@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import argparse
 import pandas as pd
-
+edge_rate = 0.05
 parser = argparse.ArgumentParser()
 parser.add_argument('--imgfile', default='',type=str,
                     help = 'The file name of the orignial image file')
@@ -23,15 +23,17 @@ if __name__ == "__main__":
     # Create Empty Black Image
     blank_image = np.zeros(shape=[height, width, 3], dtype=np.uint8)
     for index, row in fd.iterrows():
-        for h in range(int(row['height'])):
-            for w in range(int(row['width'])):
-                blank_image[row['h']+h,row['w']+w,0] = 255
-                blank_image[row['h']+h,row['w']+w,1] = 255
-                blank_image[row['h']+h,row['w']+w,2] = 255
-                ori_img[row['h']+h,row['w']+w] = (255,255,255)
-                ori_img[row['h']+h,row['w']+w] = (255,255,255)
-                ori_img[row['h']+h,row['w']+w] = (255,255,255)
+        edge_h = int(row['height'])*edge_rate+10
+        edge_w = int(row['width'])*edge_rate+10
+        h = int(row['h']-edge_h)
+        w = int(row['w']-edge_w)
+        for dh in range(int(row['height'])+int(edge_h*2)):
+            for dw in range(int(row['width'])+int(edge_w*2)):
+                if h+dh >= 0 and w + dw >= 0 and h+dh < height and w+dw < width:
+                    blank_image[h+dh,w+dw,0] = 255
+                    blank_image[h+dh,w+dw,1] = 255
+                    blank_image[h+dh,w+dw,2] = 255
+                    ori_img[h+dh,w+dw] = (255,255,255)
     cv2.imwrite(args.imgfile,ori_img)
     cv2.imwrite(args.imgfile+'_mask.png',blank_image)
-    print("Mask Complete")
     # cv2.imwrite(args.imgfile, ori_img)

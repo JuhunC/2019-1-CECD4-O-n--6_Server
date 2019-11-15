@@ -7,14 +7,12 @@ const exec = util.promisify(require('child_process').exec);
 var gen_inpaint_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6\\generative_inpainting'
 
 exports.run_gen_inpaint = async function(req, res, json_data){
-    // console.log(json_data['image_file_dir']);
-    // console.log(typeof(json_data));
+    
     var ori_file_dir ='';
     for (var key in json_data) {
         var item = json_data[key];
         if(key=='image_file_dir'){
             ori_file_dir = item[0];
-            // console.log(ori_file_dir);
         }
         console.log(item);
     }
@@ -51,11 +49,31 @@ exports.run_gen_inpaint = async function(req, res, json_data){
         +' --mask '+ori_file_dir+'_mask.png '
         +' --output '+ori_file_dir+'_out.png'
         +' --checkpoint_dir ' +gen_inpaint_dir+'/model_logs/release_places2_256'
-        // test.py --image examples/places2/case1_input.png
-        // --mask examples/places2/case1_mask.png
-        // --output examples/places2/case1_output.png
-        // --checkpoint_dir model_logs/release_places2_256
     )
-    console.log(stdout1)
+    console.log(stdout1);
+    console.log(stderr1);
+
+    // var s = fs.createReadStream(ori_file_dir+'_out.png');
+    // s.on('open',function(){
+    //     res.set('Content-Type','image/png');
+    //     s.pipe(res);
+    // });
+    // s.on('error',function(){
+    //     res.set('Content-Type','text/plain');
+    //     res.status(404).end('Not found');
+    // });
+
+    // var image = fs.createWriteStream(ori_file_dir+'_out.png');
+    // res.writeHead(200, {'Content-Type': 'image/png' });
+    // res.send(image,'binary');
+    // res.send();
+
+    var file = fs.createReadStream(ori_file_dir+'_out.png');
+    file.on('open', function(){
+        res.set('Content-Type','image/png');
+        file.pipe(res);
+    })
+
     console.log('Finished Generative Inpainting')
+    return;
 }
