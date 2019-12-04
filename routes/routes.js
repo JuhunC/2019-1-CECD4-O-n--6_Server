@@ -3,6 +3,8 @@ var fs = require('fs');
 var app = express();
 var yolov3 = require('../models/yolov3');
 var inpaint = require('../models/gen_inpaint');
+var mask_rcnn = require('../models/mask_rcnn');
+
 var multer, storage, path, crypto;
 multer = require('multer');
 path = require('path');
@@ -13,6 +15,7 @@ server_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\'
 yolov3_out_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\output\\yolov3\\'
 gen_inpaint_out_dir = 'C:\\Users\\johnc\\Documents\\2019-1-CECD4-O-n--6_Server\\output\\gen_inpaint\\'
 
+mask_rcnn_dir = 'C:\\Users\\JohnC\\Documents\\Mask_RCNN\\'
 
 storage = multer.diskStorage({
     destination : function(req,file,cb){
@@ -31,6 +34,10 @@ module.exports = function(app) {
 
     app.get('/',function(req,res){
         res.end("Node-File-Upload");
+    });
+
+    app.post('/mask_rcnn',upload.single('image'),function(req,res){
+        mask_rcnn.run_mask_rcnn(res, server_dir+'/uploads/'+req.file.filename, server_dir+'\\output\\yolov3\\'+req.file.filename.split('.').slice(0,-1).join('.'));
     });
     app.post('/yolov3',upload.single('image'), function(req, res) {//filename.split('.').slice(0, -1).join('.')
         yolov3.run_yolov3(res, server_dir+'/uploads/'+req.file.filename, server_dir+'\\output\\yolov3\\'+req.file.filename.split('.').slice(0,-1).join('.'));
